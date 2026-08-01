@@ -1,8 +1,8 @@
 # SCADE One → ESP32: A Model-Based Embedded Systems Course
 
 A nine-practice laboratory series that takes a student from a first SCADE One
-operator to a complete, fail-safe **aircraft flight-control system** running on
-an ESP32 under FreeRTOS — built entirely on one principle:
+operator to a fail-safe **flight-control demonstrator** running on an ESP32
+under FreeRTOS — built entirely on one principle:
 
 > **The model owns the logic. The platform owns the I/O.**
 
@@ -41,8 +41,8 @@ complete model in Practice 9.
 
 ## The final system (Practice 9)
 
-A flight-control computer implemented as five cooperating FreeRTOS tasks around
-a single generated SCADE model:
+A benchtop flight-control demonstrator implemented as five cooperating FreeRTOS
+tasks around a single generated SCADE model:
 
 - **2 potentiometers** — pilot inputs (`mode` = flight phase, `dir` = direction)
 - **5 servos** — left/right ailerons, rudder, elevator, and landing gear
@@ -131,5 +131,6 @@ for educational use; the code is provided as-is for learning.
 ---
 
 *Built as a graduate embedded-systems course at UNAQ — from a first dataflow
-operator to a certifiable-minded flight controller, one auditable layer at a
-time.*
+operator to a fail-safe flight-control demonstrator, one auditable layer at a
+time. An educational prototype that applies model-based, safety-aware design
+practices; it is not a certified avionics system.*
