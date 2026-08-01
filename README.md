@@ -12,7 +12,7 @@ the series the glue grows from three blinking LEDs into a priority-scheduled
 RTOS application driving four control surfaces, a landing gear, panel
 indicators, telemetry, and an in-model emergency mode.
 
-**Author:** Leonardo Franco García · ID 12148
+**Author:** Leonardo Franco García · 
 **Institution:** Universidad Aeronáutica de Querétaro (UNAQ) — Embedded Systems Laboratory
 **Stack:** SCADE One (Ansys) · ESP-IDF v5.x · FreeRTOS · ESP32
 
@@ -84,8 +84,6 @@ tasks around a single generated SCADE model:
 │   ├── p7-landing-gear/
 │   ├── p8-fail-safe/
 │   └── p9-aircraft/              (main.c, CMakeLists, components/scade_gen)
-├── models/               # SCADE One model exports / screenshots
-└── media/                # photos, wiring diagrams, demo video/GIF
 ```
 
 ---
@@ -115,11 +113,55 @@ generated files by hand.
 
 ## Requirements
 
-- **SCADE One** (Ansys) with the Swan code generator (student edition works)
-- **ESP-IDF v5.x** (Espressif toolchain)
-- **ESP32 DevKit V1**, breadboard, jumper wires
-- Practice-specific hardware: LEDs + 220 Ω resistors, SG90 servos,
-  10 kΩ potentiometers, and a 5 V bench/USB supply for the servos
+### Software
+
+- **SCADE One** (Ansys) with the Swan code generator — student edition is sufficient
+- **ESP-IDF v5.x** (Espressif toolchain: Python, CMake, Ninja, Xtensa GCC)
+- A serial terminal (the built-in `idf.py monitor` is enough)
+
+### Hardware (bill of materials)
+
+| # | Item | Qty | Used in | Notes |
+|---|------|-----|---------|-------|
+| 1 | ESP32 DevKit V1 | 1 | all | USB data cable (not charge-only) |
+| 2 | Breadboard | 1–2 | P3+ | half-size is fine; two help for P9 |
+| 3 | Jumper wires (M–M, M–F) | ~20 | P3+ | signal, power, and ground |
+| 4 | LEDs (red, yellow/white, green) | 3 | P3+ | phase / panel indicators |
+| 5 | Resistors 220 Ω | 3 | P3+ | LED current limiting |
+| 6 | Jumper (loopback) | 1 | P4, P5 | UART2 loopback GPIO4↔GPIO5 |
+| 7 | SG90 micro servo | 1 → 5 | P7 → P9 | 1 in P7, up to 5 in P9 |
+| 8 | Potentiometer 10 kΩ | 1 → 2 | P7 → P9 | analog inputs on ADC1 |
+| 9 | External 5 V supply (≥ 2 A) | 1 | P7+ | for the servos — **not** the 3V3 pin |
+
+> **Notes on power and pins:** the on-board `BOOT` button (GPIO0) is the input in
+> P6–P8, so no button hardware is needed. Servos must be powered from an
+> external 5 V rail whose ground is tied to the ESP32 ground; five SG90s moving
+> together can draw over 1 A. Potentiometers read on ADC1 pins (GPIO32–39) to
+> avoid the Wi-Fi conflict of ADC2.
+
+---
+
+## What you'll learn
+
+By working through the series you get hands-on practice with:
+
+- **Model-based design with SCADE One** — dataflow operators, the `pre`
+  memory, state machines with guarded transitions, and code generation.
+- **The generator contract** — how a SCADE model compiles to a
+  `context` / `reset` / `step` C API, and how to integrate it as an
+  ESP-IDF component without editing the generated files.
+- **Bare-metal I/O on the ESP32** — GPIO, UART, the ADC one-shot driver, and
+  PWM servo control with LEDC.
+- **Concurrency with FreeRTOS** — tasks, priorities, queues, mutexes, and
+  fixed-period scheduling with `vTaskDelayUntil`.
+- **A basic functional-safety mindset** — separating fault *detection* from
+  fault *reaction*, a modeled emergency state, and the task watchdog.
+- **Debugging real hardware** — brown-outs, wiring faults, and the kind of
+  issues documented in each practice's troubleshooting section.
+
+The goal is not a finished product but a clear, worked path from a first
+operator to a small concurrent control system, with each design decision
+made explicit.
 
 ---
 
