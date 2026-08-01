@@ -12,7 +12,7 @@ the series the glue grows from three blinking LEDs into a priority-scheduled
 RTOS application driving four control surfaces, a landing gear, panel
 indicators, telemetry, and an in-model emergency mode.
 
-**Author:** Leonardo Franco García · 
+**Author:** Leonardo Franco García · ID 12148
 **Institution:** Universidad Aeronáutica de Querétaro (UNAQ) — Embedded Systems Laboratory
 **Stack:** SCADE One (Ansys) · ESP-IDF v5.x · FreeRTOS · ESP32
 
@@ -67,30 +67,35 @@ tasks around a single generated SCADE model:
 
 ## Repository structure
 
+Each practice folder is self-contained: it holds the lab manual (PDF) and,
+from Practice 2 on, its ESP-IDF project (the glue layer plus the generated
+`scade_gen` component).
+
 ```
 .
 ├── README.md
 ├── LICENSE
-├── practices/            # the 9 lab manuals
-│   ├── 01-fundamentals/          (PDF + LaTeX source + images)
-│   ├── 02-esp32-setup/
-│   ├── ...
-│   └── 09-integration/
-├── code/                 # ESP-IDF projects (glue layer)
-│   ├── p3-traffic-light/
-│   ├── p4-telemetry/
-│   ├── p5-rtos/
-│   ├── p6-flight-phase/
-│   ├── p7-landing-gear/
-│   ├── p8-fail-safe/
-│   └── p9-aircraft/              (main.c, CMakeLists, components/scade_gen)
+└── Practices/
+    ├── 01-fundamentals/     Practice-01-*.pdf
+    ├── 02-esp32-setup/      Practice-02-*.pdf  +  lg_env_check/
+    ├── 03-first-bridge/     Practice-03-*.pdf  +  lg_bridge/
+    ├── 04-uart-telemetry/   Practice-04-*.pdf  +  lg_telemetry/
+    ├── 05-model-as-task/    Practice-05-*.pdf  +  lg_rtos/
+    ├── 06-flight-phase/     Practice-06-*.pdf  +  lg_phase/
+    ├── 07-landing-gear/     Practice-07-*.pdf  +  lg_gear/
+    ├── 08-fail-safe/        Practice-08-*.pdf  +  lg_safe/
+    └── 09-integration/      Practice-09-*.pdf  +  lg_aircraft/
 ```
+
+Each ESP-IDF project contains `main/` (the glue `main.c` and its
+`CMakeLists.txt`), `components/scade_gen/` (the SCADE-generated C plus the
+hand-written `swan_config.h`), and the project `CMakeLists.txt` / `sdkconfig`.
 
 ---
 
 ## How to use
 
-**Read the manuals** (`practices/`) in order — each PDF is a self-contained
+**Read the manuals** (`Practices/`) in order — each PDF is a self-contained
 laboratory session with theory, a worked example, a main activity, an
 assessment questionnaire, and a troubleshooting section drawn from real
 development.
@@ -99,7 +104,7 @@ development.
 
 ```bash
 # with ESP-IDF v5.x installed and exported
-cd code/p9-aircraft
+cd Practices/09-integration/lg_aircraft
 idf.py set-target esp32
 idf.py -p COM8 flash monitor      # replace COM8 with your port
 ```
